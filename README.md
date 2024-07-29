@@ -1,5 +1,9 @@
 # nice 본인인증 샘플
 
+
+https://github.com/user-attachments/assets/5ec99646-8789-4a1a-9471-b6752080937e
+
+
 ## flow
 1. APP 에서 Server에 토큰 요청 (main.dart)
 2. Server에서 APP에 토큰 발급 (main.dart)
