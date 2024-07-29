@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>본인인증 성공시</title>
+</head>
+<body>
+<!--
+아래와 같은 url이 리턴됨
+https://api.fitbuddy.co.kr/api/v2/auth/nice/callback?token_version_id=202407292327545G-NC9FCD477-GH8ED-4H46EEA8CD&enc_data=tjTciUS80FNYRGFtqMUfhCP6dJDWzN4/BMIEoMk1MQWcL6vhu6qzFRkgyIGwNqoeQw1Gwlk/hH2gqu/Aijianom%2BeHGbep3type11VMEJjpvWSfUTDdsIOTxRkiwdH9vpv9TbNYCZufD2TzEl46BWlNGXxO1MdacGLCDoXibj/cM8P/JIELiqffc8wkHI/eAiqNVWgSA7hmKiAg9f1hyiuQ6Fmf7zRpHZ1%2BzW05l0W4mzo/15FnW8jwwImEy5X7HlcIY1AbShmurnquyOgzcxSR7%2BoijrILI9UnObqL62000wx/L8qmj3pxORIXg0zD6qS6ylg9nuOIjS7obfUxlZIQMpr8T2K96M6LypEKRXpjdvAP7eXs08K/nFYc21%2BZjRy2NNSyIapS6K/U39WcV1oELOQ9umSpNBZTe9J/%2BzDBNdkLK215msdW8YJ17lqqDNLXkz0E373IAGopDMtqT3TlF8odq21eLYZZqtokfknXfgoHkfTaDQcQgm91nGeB4mqjmGAN0xt5jr6C2qqDlBWgyYTDzz3uHGFjUdZkSVobtEnX7EFQhC9mdJepAq7MkEqqY2w1BR0acVCtd5JRyGaoUX45ODH/NoRM6IjlaH5dLCei8jrKqpu/2xSlYXv/tRIcw9jPcsTj2%2B3TvnktSdThs9ZZCr9g8%2BsJDCu8qQjA=&integrity_value=EjWkYIis384hPzQzQbQv0AzoyNuWujbKo3vdCsV4PDA=
+
+현재는 https://api.fitbuddy.co.kr/api/v2/auth/nice/callback 에서 해당 데이터를 받아 처리하는데,
+데이터 처리하기 위한 별도의 웹만 만들어 serving 하면 끝
+
+success process
+1. 본인인증 성공
+2. callback url에 queryString으로 token_version_id, enc_data, integrity_value를 받음
+3. 성공 웹페이지에서 앱으로 위 데이터 전달
+4. 앱에서 알아서 처리
+-->
+
+<script>
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  // url 파라미터를 가져옴
+  const token_version_id = getParameterByName('token_version_id');
+  const enc_data = getParameterByName('enc_data');
+  const integrity_value = getParameterByName('integrity_value');
+
+  // 가져온 파라미터를 alert로 출력
+  alert('token_version_id: ' + token_version_id + '\nenc_data: ' + enc_data + '\nintegrity_value: ' + integrity_value);
+
+  // 데이터를 앱으로 전달
+  window.flutter_inappwebview.callHandler('success', {
+    tokenVersionId: token_version_id,
+    encData: enc_data,
+    integrityValue: integrity_value
+  })
+</script>
+</body>
+</html>

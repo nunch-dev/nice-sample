@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>fitbuddy 본인인증</title>
+</head>
+<body>
+<form name="form" id="form" action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb">
+  <input type="hidden" id="m" name="m" value="service"/>
+  <input type="hidden" id="token_version_id" name="token_version_id" value=""/>
+  <input type="hidden" id="enc_data" name="enc_data"/>
+  <input type="hidden" id="integrity_value" name="integrity_value"/>
+</form>
+<script>
+  window.addEventListener("flutterInAppWebViewPlatformReady", function (event) {
+    // webview handler
+    // 앱 -> 웹뷰로 데이터 전달
+    // result에 데이터가 전달됨
+    window.flutter_inappwebview.callHandler('onReady').then(function (result) {
+      const {tokenVersionId, encData, integrityValue} = result;
+
+      // update form value
+      document.querySelector('#token_version_id').value = tokenVersionId;
+      document.querySelector('#enc_data').value = encData;
+      document.querySelector('#integrity_value').value = integrityValue;
+
+      // form submit
+      // 이때 본인인증 창 열림
+      document.querySelector('#form').submit();
+    });
+  });
+</script>
+
+
+</body>
+</html>
